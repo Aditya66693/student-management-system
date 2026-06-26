@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Management System</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <i class="ti ti-school"></i>
+      <span>StudentMS</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-section="dashboard">
+        <i class="ti ti-layout-dashboard"></i> Dashboard
+      </a>
+      <a href="#" class="nav-item" data-section="students">
+        <i class="ti ti-users"></i> Students
+      </a>
+      <a href="#" class="nav-item" data-section="add">
+        <i class="ti ti-user-plus"></i> Add Student
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <section class="section" id="section-dashboard">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <span id="today-date"></span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="ti ti-users stat-icon blue"></i>
+          <div>
+            <p class="stat-label">Total Students</p>
+            <p class="stat-value" id="stat-total">0</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="ti ti-calendar-stats stat-icon green"></i>
+          <div>
+            <p class="stat-label">Average Age</p>
+            <p class="stat-value" id="stat-avg">—</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="ti ti-books stat-icon amber"></i>
+          <div>
+            <p class="stat-label">Sections</p>
+            <p class="stat-value" id="stat-sections">0</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <i class="ti ti-hash stat-icon purple"></i>
+          <div>
+            <p class="stat-label">Latest Roll No.</p>
+            <p class="stat-value" id="stat-latest">—</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Recent students</h2>
+        <table class="student-table" id="dashboard-table">
+          <thead>
+            <tr>
+              <th>Roll No.</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Section</th>
+            </tr>
+          </thead>
+          <tbody id="dashboard-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- STUDENTS LIST -->
+    <section class="section hidden" id="section-students">
+      <div class="page-header">
+        <h1>All Students</h1>
+        <button class="btn btn-primary" onclick="navigate('add')">
+          <i class="ti ti-plus"></i> Add Student
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-wrap">
+          <i class="ti ti-search"></i>
+          <input type="text" id="search-input" placeholder="Search by name or roll number…" oninput="renderStudents()" />
+        </div>
+        <select id="filter-section" onchange="renderStudents()">
+          <option value="">All sections</option>
+          <option value="A">Section A</option>
+          <option value="B">Section B</option>
+          <option value="C">Section C</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <table class="student-table">
+          <thead>
+            <tr>
+              <th>Roll No.</th>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Section</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="students-tbody"></tbody>
+        </table>
+        <p class="empty-msg hidden" id="no-students">No students found.</p>
+      </div>
+    </section>
+
+    <!-- ADD / EDIT STUDENT -->
+    <section class="section hidden" id="section-add">
+      <div class="page-header">
+        <h1 id="form-title">Add Student</h1>
+      </div>
+
+      <div class="card form-card">
+        <div class="form-group">
+          <label for="f-roll">Roll Number</label>
+          <input type="text" id="f-roll" placeholder="e.g. 101" />
+          <p class="field-error hidden" id="err-roll"></p>
+        </div>
+        <div class="form-group">
+          <label for="f-name">Full Name</label>
+          <input type="text" id="f-name" placeholder="e.g. Aanya Sharma" />
+          <p class="field-error hidden" id="err-name"></p>
+        </div>
+        <div class="form-group">
+          <label for="f-age">Age</label>
+          <input type="number" id="f-age" placeholder="e.g. 18" min="5" max="30" />
+          <p class="field-error hidden" id="err-age"></p>
+        </div>
+        <div class="form-group">
+          <label for="f-section">Section</label>
+          <select id="f-section">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-outline" onclick="navigate('students')">Cancel</button>
+          <button class="btn btn-primary" onclick="saveStudent()" id="save-btn">Save Student</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- DELETE CONFIRM MODAL -->
+  <div class="modal-backdrop hidden" id="modal-backdrop">
+    <div class="modal">
+      <div class="modal-icon"><i class="ti ti-alert-triangle"></i></div>
+      <h2>Delete student?</h2>
+      <p>This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
